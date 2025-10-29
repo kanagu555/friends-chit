@@ -52,7 +52,7 @@ async function createDemoUsers() {
     console.log("\n📧 Creating member user...");
     const { data: memberData, error: memberError } = await supabase.auth.signUp(
       {
-        email: "member@chitfund.com",
+        email: "kanagarajwhb@gmail.com",
         password: "member123",
       }
     );
