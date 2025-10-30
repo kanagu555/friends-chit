@@ -11,7 +11,8 @@
     "setup-users": "node scripts/setup-demo-users.js",
     "create-users": "node scripts/create-demo-users-simple.js",
     "create-admin": "node scripts/create-custom-admin.js",
-    "create-production-admin": "node scripts/create-production-admin.js"
+    "create-production-admin": "node scripts/create-production-admin.js",
+    "test-roles": "node scripts/test-role-detection.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

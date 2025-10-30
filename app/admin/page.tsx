@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { AuthGuard } from "@/components/auth/auth-guard"
 import { Header } from "@/components/layout/header"
-import { MembersManager } from "@/components/admin/members-manager"
+import { AdminDashboard } from "@/components/admin/admin-dashboard"
 import { Loader2 } from 'lucide-react'
 
 export default function AdminPage() {
@@ -29,8 +29,7 @@ export default function AdminPage() {
       <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-2xl font-bold mb-6">Admin Panel</h1>
-          <MembersManager />
+          <AdminDashboard />
         </div>
       </div>
     </AuthGuard>

@@ -36,7 +36,16 @@ export function useAuth() {
         const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
           async (event, session) => {
             if (session?.user) {
-              const role = session.user.email === 'admin@chitfund.com' ? 'admin' : 'member'
+              const { getUserRole } = await import('@/lib/user-roles')
+              const role = getUserRole(session.user.email!)
+              
+              console.log('🔍 Auth State Change:', {
+                email: session.user.email,
+                detectedRole: role,
+                event,
+                timestamp: new Date().toISOString()
+              })
+              
               setUser({
                 id: session.user.id,
                 email: session.user.email!,

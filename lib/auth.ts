@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'member'
+import { getUserRole, UserRole } from './user-roles'
 
 export interface AuthUser {
   id: string
@@ -17,8 +17,14 @@ export async function signIn(email: string, password: string) {
 
     if (error) throw error
 
-    // Determine role based on email
-    const role: UserRole = email === 'admin@chitfund.com' ? 'admin' : 'member'
+    // Determine role based on configured roles
+    const role = getUserRole(data.user.email!)
+    
+    console.log('🔍 Login Debug:', {
+      email: data.user.email,
+      detectedRole: role,
+      timestamp: new Date().toISOString()
+    })
     
     return {
       success: true,
@@ -64,7 +70,8 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     
     if (!user) return null
 
-    const role: UserRole = user.email === 'admin@chitfund.com' ? 'admin' : 'member'
+    // Determine role based on configured roles
+    const role = getUserRole(user.email!)
     
     return {
       id: user.id,
@@ -83,5 +90,5 @@ export function isAdmin(user: AuthUser | null): boolean {
 
 // Check if user has member role
 export function isMember(user: AuthUser | null): boolean {
-  return user?.role === 'member'
+  return user?.role === 'member' || user?.role === 'admin' // Admins can access member features
 }

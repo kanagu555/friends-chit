@@ -2,9 +2,11 @@
 
 import { useAuth } from "@/hooks/use-auth"
 import { MembersManager } from "@/components/admin/members-manager"
+import { AdminDashboard as AdminDashboardComponent } from "@/components/admin/admin-dashboard"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Users, Shield, User } from "lucide-react"
+import { RoleDebug } from "@/components/debug/role-debug"
 
 export function Dashboard() {
   const { user } = useAuth()
@@ -52,19 +54,7 @@ export function Dashboard() {
 function AdminDashboard() {
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Admin Panel
-          </CardTitle>
-          <CardDescription>
-            Manage members, chit funds, and system settings
-          </CardDescription>
-        </CardHeader>
-      </Card>
-      
-      <MembersManager />
+      <AdminDashboardComponent />
     </div>
   )
 }
