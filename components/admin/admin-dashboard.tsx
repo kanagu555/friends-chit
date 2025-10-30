@@ -237,10 +237,13 @@ export function AdminDashboard() {
                         S.No
                       </th>
                       <th className="border border-gray-300 p-3 text-center font-bold">
-                        Monthly
+                        Month
                       </th>
                       <th className="border border-gray-300 p-3 text-center font-bold">
-                        Pay (₹)
+                        Monthly Pay (₹)
+                      </th>
+                      <th className="border border-gray-300 p-3 text-center font-bold">
+                        Chit Amount (₹)
                       </th>
                       <th className="border border-gray-300 p-3 text-center font-bold">
                         Benefit
@@ -248,27 +251,41 @@ export function AdminDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {PAYOUT_STRUCTURE.map((row) => (
-                      <tr key={row.month} className="hover:bg-gray-50">
-                        <td className="border border-gray-300 p-3 text-center">
-                          {row.month}
-                        </td>
-                        <td className="border border-gray-300 p-3 text-center">
-                          10,000
-                        </td>
-                        <td className="border border-gray-300 p-3 text-center">
-                          {row.payout.toLocaleString()}
-                        </td>
-                        <td
-                          className={`border border-gray-300 p-3 text-center ${
-                            row.benefit < 0 ? "text-red-600" : "text-green-600"
-                          }`}
-                        >
-                          {row.benefit > 0 ? "+" : ""}
-                          {row.benefit}
-                        </td>
-                      </tr>
-                    ))}
+                    {PAYOUT_STRUCTURE.map((row) => {
+                      // Start from Oct 2025 (month index 9). Compute label like "Oct 25", "Nov 25", ...
+                      const date = new Date(2025, 9 + (row.month - 1), 1);
+                      const monthLabel = date.toLocaleString("en-US", {
+                        month: "short",
+                        year: "2-digit",
+                      });
+
+                      return (
+                        <tr key={row.month} className="hover:bg-gray-50">
+                          <td className="border border-gray-300 p-3 text-center">
+                            {row.month}
+                          </td>
+                          <td className="border border-gray-300 p-3 text-center">
+                            {monthLabel}
+                          </td>
+                          <td className="border border-gray-300 p-3 text-center">
+                            10,000
+                          </td>
+                          <td className="border border-gray-300 p-3 text-center">
+                            {row.payout.toLocaleString()}
+                          </td>
+                          <td
+                            className={`border border-gray-300 p-3 text-center ${
+                              row.benefit < 0
+                                ? "text-red-600"
+                                : "text-green-600"
+                            }`}
+                          >
+                            {row.benefit > 0 ? "+" : ""}
+                            {row.benefit}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
