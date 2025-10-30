@@ -173,7 +173,348 @@ export function ReportsManager() {
     }
   };
 
-  const generatePDFReport = async () => {};
+  const generatePDFReport = async () => {
+    try {
+      setIsGenerating(true);
+      setDownloadType("image");
+
+      console.log("Generating colorful PDF report...");
+
+      const jsPDFModule = await import("jspdf");
+      const pdf = new jsPDFModule.jsPDF("p", "mm", "a4");
+
+      // Define colors
+      const colors = {
+        primary: [37, 99, 235] as [number, number, number], // Blue
+        secondary: [107, 114, 128] as [number, number, number], // Gray
+        success: [34, 197, 94] as [number, number, number], // Green
+        warning: [245, 158, 11] as [number, number, number], // Orange
+        danger: [239, 68, 68] as [number, number, number], // Red
+        white: [255, 255, 255] as [number, number, number],
+        lightBlue: [239, 246, 255] as [number, number, number],
+        lightGreen: [240, 253, 244] as [number, number, number],
+        lightOrange: [255, 247, 237] as [number, number, number],
+        darkBlue: [30, 64, 175] as [number, number, number],
+        yellow: [255, 193, 7] as [number, number, number],
+      };
+
+      let yPos = 20;
+
+      // Header with background
+      pdf.setFillColor(...colors.primary);
+      pdf.rect(0, 0, 210, 40, "F");
+
+      pdf.setTextColor(...colors.white);
+      pdf.setFontSize(24);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("CHIT FUND REPORT", 105, 20, { align: "center" });
+
+      pdf.setFontSize(14);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`${currentChit?.name || "N/A"}`, 105, 30, { align: "center" });
+
+      yPos = 50;
+
+      // Report Info Box
+      pdf.setFillColor(...colors.lightBlue);
+      pdf.rect(15, yPos, 180, 20, "F");
+      pdf.setDrawColor(...colors.primary);
+      pdf.rect(15, yPos, 180, 20, "S");
+
+      pdf.setTextColor(...colors.darkBlue);
+      pdf.setFontSize(10);
+      pdf.text(
+        `Generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`,
+        20,
+        yPos + 8
+      );
+      pdf.text(
+        `Report ID: CHT-${Date.now().toString().slice(-6)}`,
+        20,
+        yPos + 15
+      );
+
+      yPos += 35;
+
+      // Summary Statistics Section
+      pdf.setTextColor(...colors.primary);
+      pdf.setFontSize(16);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("SUMMARY STATISTICS", 20, yPos);
+      yPos += 15;
+
+      // Statistics Cards
+      const stats = [
+        {
+          label: "Total Amount",
+          value: `₹${currentChit?.total_amount?.toLocaleString() || "N/A"}`,
+          color: colors.primary,
+        },
+        {
+          label: "Monthly Payment",
+          value: `₹${currentChit?.monthly_payment?.toLocaleString() || "N/A"}`,
+          color: colors.success,
+        },
+        {
+          label: "Duration",
+          value: `${currentChit?.duration_months || "N/A"} months`,
+          color: colors.warning,
+        },
+        {
+          label: "Current Month",
+          value: `${currentChit?.current_month || "N/A"}`,
+          color: colors.danger,
+        },
+      ];
+
+      stats.forEach((stat, index) => {
+        const x = 20 + (index % 2) * 90;
+        const y = yPos + Math.floor(index / 2) * 25;
+
+        // Card background
+        pdf.setFillColor(...stat.color);
+        pdf.rect(x, y, 80, 20, "F");
+
+        // Card border
+        pdf.setDrawColor(...stat.color);
+        pdf.rect(x, y, 80, 20, "S");
+
+        // Text
+        pdf.setTextColor(...colors.white);
+        pdf.setFontSize(8);
+        pdf.text(stat.label, x + 5, y + 8);
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "bold");
+        pdf.text(stat.value, x + 5, y + 16);
+        pdf.setFont("helvetica", "normal");
+      });
+
+      yPos += 60;
+
+      // Draws Summary
+      const drawStats = [
+        { label: "Total Draws", value: draws.length, color: colors.primary },
+        {
+          label: "Completed",
+          value: draws.filter((d) => d.status === "completed").length,
+          color: colors.success,
+        },
+        {
+          label: "Pending",
+          value: draws.filter((d) => d.status === "pending").length,
+          color: colors.warning,
+        },
+        {
+          label: "Total Payout",
+          value: `₹${draws
+            .reduce((sum, d) => sum + d.payout_amount, 0)
+            .toLocaleString()}`,
+          color: colors.danger,
+        },
+      ];
+
+      drawStats.forEach((stat, index) => {
+        const x = 20 + (index % 2) * 90;
+        const y = yPos + Math.floor(index / 2) * 25;
+
+        pdf.setFillColor(...stat.color);
+        pdf.rect(x, y, 80, 20, "F");
+        pdf.setDrawColor(...stat.color);
+        pdf.rect(x, y, 80, 20, "S");
+
+        pdf.setTextColor(...colors.white);
+        pdf.setFontSize(8);
+        pdf.text(stat.label, x + 5, y + 8);
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "bold");
+        pdf.text(stat.value.toString(), x + 5, y + 16);
+        pdf.setFont("helvetica", "normal");
+      });
+
+      yPos += 70;
+
+      // Monthly Draws Table
+      pdf.setTextColor(...colors.primary);
+      pdf.setFontSize(16);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("MONTHLY DRAWS DETAILS", 20, yPos);
+      yPos += 15;
+
+      // Table Header
+      const tableHeaders = [
+        { text: "Month", x: 20, width: 35 },
+        { text: "Date", x: 55, width: 25 },
+        { text: "Status", x: 80, width: 25 },
+        { text: "Winner", x: 105, width: 45 },
+        { text: "Participants", x: 150, width: 25 },
+        { text: "Payout (₹)", x: 175, width: 20 },
+      ];
+
+      // Header background
+      pdf.setFillColor(...colors.yellow);
+      pdf.rect(15, yPos - 5, 180, 12, "F");
+      pdf.setDrawColor(...colors.primary);
+      pdf.rect(15, yPos - 5, 180, 12, "S");
+
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFontSize(9);
+      pdf.setFont("helvetica", "bold");
+
+      tableHeaders.forEach((header) => {
+        pdf.text(header.text, header.x, yPos + 3);
+      });
+
+      yPos += 15;
+
+      // Table Data
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(8);
+
+      draws.forEach((draw, index) => {
+        // Check if we need a new page
+        if (yPos > 260) {
+          pdf.addPage();
+          yPos = 30;
+
+          // Repeat header on new page
+          pdf.setFillColor(...colors.yellow);
+          pdf.rect(15, yPos - 5, 180, 12, "F");
+          pdf.setDrawColor(...colors.primary);
+          pdf.rect(15, yPos - 5, 180, 12, "S");
+
+          pdf.setTextColor(0, 0, 0);
+          pdf.setFontSize(9);
+          pdf.setFont("helvetica", "bold");
+
+          tableHeaders.forEach((header) => {
+            pdf.text(header.text, header.x, yPos + 3);
+          });
+
+          yPos += 15;
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
+        }
+
+        // Row background (alternating colors)
+        if (index % 2 === 0) {
+          pdf.setFillColor(248, 250, 252); // Light gray
+          pdf.rect(15, yPos - 3, 180, 10, "F");
+        }
+
+        // Row border
+        pdf.setDrawColor(200, 200, 200);
+        pdf.rect(15, yPos - 3, 180, 10, "S");
+
+        // Status color coding
+        let statusColor = colors.secondary;
+        if (draw.status === "completed") {
+          statusColor = colors.success;
+        } else if (draw.status === "pending") {
+          statusColor = colors.warning;
+        }
+
+        // Row data
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(
+          getMonthName(draw.month_number, currentChit?.start_date),
+          20,
+          yPos + 2
+        );
+        pdf.text(new Date(draw.draw_date).toLocaleDateString(), 55, yPos + 2);
+
+        // Status with color
+        pdf.setTextColor(...statusColor);
+        pdf.text(draw.status.toUpperCase(), 80, yPos + 2);
+
+        pdf.setTextColor(0, 0, 0);
+        const winnerText = draw.winner_name || "Not Declared";
+        pdf.text(
+          winnerText.length > 20
+            ? winnerText.substring(0, 17) + "..."
+            : winnerText,
+          105,
+          yPos + 2
+        );
+
+        const participantCount = draw.participants?.length || 0;
+        pdf.text(participantCount.toString(), 150, yPos + 2);
+
+        // Payout with color
+        pdf.setTextColor(...colors.success);
+        pdf.text(draw.payout_amount.toLocaleString(), 175, yPos + 2);
+
+        yPos += 10;
+      });
+
+      // Footer
+      yPos += 20;
+      if (yPos > 260) {
+        pdf.addPage();
+        yPos = 30;
+      }
+
+      // Footer background
+      pdf.setFillColor(...colors.lightBlue);
+      pdf.rect(15, yPos, 180, 25, "F");
+      pdf.setDrawColor(...colors.primary);
+      pdf.rect(15, yPos, 180, 25, "S");
+
+      pdf.setTextColor(...colors.primary);
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("REPORT SUMMARY", 20, yPos + 8);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(8);
+      pdf.text(
+        `This report contains ${draws.length} monthly draws from ${
+          currentChit?.name || "Chit Fund"
+        }`,
+        20,
+        yPos + 15
+      );
+      pdf.text(
+        `Generated by Chit Fund Management System on ${new Date().toLocaleDateString()}`,
+        20,
+        yPos + 20
+      );
+
+      // Page numbers
+      const pageCount = (pdf as any).internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        pdf.setPage(i);
+        pdf.setTextColor(...colors.secondary);
+        pdf.setFontSize(8);
+        pdf.text(`Page ${i} of ${pageCount}`, 190, 285, { align: "right" });
+      }
+
+      // Generate filename with timestamp
+      const timestamp = new Date().toISOString().split("T")[0];
+      const filename = `Chit_Fund_Colorful_Report_${timestamp}.pdf`;
+
+      // Download PDF
+      pdf.save(filename);
+
+      console.log("Colorful PDF download initiated");
+
+      toast({
+        title: "PDF Report Generated",
+        description: `Colorful PDF report downloaded as ${filename}`,
+      });
+    } catch (error) {
+      console.error("Colorful PDF generation error:", error);
+      toast({
+        title: "Error",
+        description: `Failed to generate PDF report: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsGenerating(false);
+      setDownloadType(null);
+    }
+  };
 
   // Capture the report as an image and trigger a PNG download
   const generateImageDownload = async () => {};
