@@ -271,7 +271,7 @@ export function AdminDashboard() {
                             10,000
                           </td>
                           <td className="border border-gray-300 p-3 text-center">
-                            {row.payout.toLocaleString()}
+                            {row.payout.toLocaleString("en-IN")}
                           </td>
                           <td
                             className={`border border-gray-300 p-3 text-center ${
