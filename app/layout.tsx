@@ -7,7 +7,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Friendly Chit Fund Management",
+  title: "Friend's Chit Fund Management",
   description: "Kodekit",
   generator: "kodekit.in",
 };
