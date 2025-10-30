@@ -35,12 +35,12 @@ npm run dev
 
 **Admin Access:**
 - Email: `admin@chitfund.com`
-- Password: `admin123`
+- Password: ``
 - Can manage all members
 
 **Member Access:**
 - Email: `member@chitfund.com`  
-- Password: `member123`
+- Password: ``
 - Can view member dashboard
 
 ## ✅ What's Included
