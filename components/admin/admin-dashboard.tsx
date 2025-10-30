@@ -38,7 +38,7 @@ export function AdminDashboard() {
     totalCollected: 100000,
     pendingDraws: 2,
     membersAcrossCycles: 24,
-    membersWithPending: 8,
+    membersWithPending: 10,
     collectedThisMonth: 240000,
   };
 
