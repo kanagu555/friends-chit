@@ -309,7 +309,7 @@ export function ChitFundManager() {
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
               <div className="text-2xl font-bold text-green-600">
-                {monthlyParticipants.length}
+               ₹{monthlyParticipants.length}
               </div>
               <div className="text-sm text-green-600">This Month</div>
             </div>
@@ -322,12 +322,16 @@ export function ChitFundManager() {
             <div className="text-center p-4 bg-orange-50 rounded-lg">
               <div className="text-2xl font-bold text-orange-600">
                 {getMonthName(
-                  currentChit.current_month || 1,
+                  hasWinnerThisMonth
+                    ? (currentChit.current_month || 1) + 1
+                    : currentChit.current_month || 1,
                   currentChit.start_date
                 )}{" "}
                 10
               </div>
-              <div className="text-sm text-orange-600">Next Draw</div>
+              <div className="text-sm text-orange-600">
+                {hasWinnerThisMonth ? "Next Draw" : "Current Draw"}
+              </div>
             </div>
           </div>
         </CardContent>
@@ -335,11 +339,11 @@ export function ChitFundManager() {
 
       {/* Management Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="participants">Participants</TabsTrigger>
           <TabsTrigger value="draws">Draws</TabsTrigger>
-          <TabsTrigger value="payments">Payments</TabsTrigger>
+          {/* <TabsTrigger value="payments">Payments</TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -698,7 +702,7 @@ export function ChitFundManager() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="payments" className="space-y-4">
+        {/* <TabsContent value="payments" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Payment Tracking</CardTitle>
@@ -720,7 +724,7 @@ export function ChitFundManager() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );

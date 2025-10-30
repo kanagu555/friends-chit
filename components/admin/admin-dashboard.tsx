@@ -32,10 +32,10 @@ export function AdminDashboard() {
 
   // Mock data - replace with real data from your backend
   const stats = {
-    activeCycles: 3,
-    totalMembers: 24,
-    pendingPayments: 45000,
-    totalCollected: 240000,
+    activeCycles: 1,
+    totalMembers: 10,
+    totalPayments: 100000,
+    totalCollected: 100000,
     pendingDraws: 2,
     membersAcrossCycles: 24,
     membersWithPending: 8,
@@ -107,13 +107,13 @@ export function AdminDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
-              Pending Payments
+              Total Payments
             </CardTitle>
             <Clock className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ₹{stats.pendingPayments.toLocaleString()}
+              ₹{stats.totalPayments.toLocaleString()}
             </div>
             <p className="text-xs text-gray-500">
               From {stats.membersWithPending} members
