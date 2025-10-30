@@ -173,225 +173,10 @@ export function ReportsManager() {
     }
   };
 
-  const generateImageReport = async () => {
-    try {
-      setIsGenerating(true);
-      setDownloadType("image");
+  const generatePDFReport = async () => {};
 
-      console.log("Starting PDF generation...");
-
-      if (!reportRef.current) {
-        throw new Error("Report element not found");
-      }
-
-      console.log("Report element found:", reportRef.current);
-
-      // Dynamic imports to avoid SSR issues
-      const html2canvas = await import("html2canvas");
-      const jsPDFModule = await import("jspdf");
-
-      console.log("Libraries loaded:", !!html2canvas, !!jsPDFModule);
-
-      // Generate canvas from the report element
-      const canvas = await html2canvas.default(reportRef.current, {
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: "#ffffff",
-        logging: false,
-        width: reportRef.current.scrollWidth,
-        height: reportRef.current.scrollHeight,
-        ignoreElements: (element) => {
-          // Skip elements that might have unsupported CSS
-          return element.tagName === "SCRIPT" || element.tagName === "STYLE";
-        },
-        onclone: (clonedDoc) => {
-          // Fix any lab() color functions in the cloned document
-          const style = clonedDoc.createElement("style");
-          style.textContent = `
-            * {
-              color: rgb(0, 0, 0) !important;
-              background-color: rgb(255, 255, 255) !important;
-              border-color: rgb(200, 200, 200) !important;
-            }
-            .bg-blue-50 { background-color: rgb(239, 246, 255) !important; }
-            .bg-green-50 { background-color: rgb(240, 253, 244) !important; }
-            .bg-purple-50 { background-color: rgb(250, 245, 255) !important; }
-            .bg-orange-50 { background-color: rgb(255, 247, 237) !important; }
-            .bg-gray-100 { background-color: rgb(243, 244, 246) !important; }
-            .text-blue-600 { color: rgb(37, 99, 235) !important; }
-            .text-green-600 { color: rgb(22, 163, 74) !important; }
-            .text-purple-600 { color: rgb(147, 51, 234) !important; }
-            .text-orange-600 { color: rgb(234, 88, 12) !important; }
-            .text-red-600 { color: rgb(220, 38, 38) !important; }
-            .border-gray-300 { border-color: rgb(209, 213, 219) !important; }
-          `;
-          clonedDoc.head.appendChild(style);
-        },
-      });
-
-      console.log("Canvas generated:", canvas.width, "x", canvas.height);
-
-      // Create PDF
-      const pdf = new jsPDFModule.jsPDF("p", "mm", "a4");
-      const imgWidth = 210;
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-
-      let position = 0;
-
-      console.log("Adding image to PDF...");
-
-      // Add image to PDF
-      const imgData = canvas.toDataURL("image/png");
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      // Add additional pages if needed
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-
-      // Generate filename with timestamp
-      const timestamp = new Date().toISOString().split("T")[0];
-      const filename = `Chit_Fund_Report_${timestamp}.pdf`;
-
-      console.log("Saving PDF:", filename);
-
-      // Download PDF
-      pdf.save(filename);
-
-      console.log("PDF download initiated");
-
-      toast({
-        title: "PDF Report Generated",
-        description: `Report downloaded as ${filename}`,
-      });
-    } catch (error) {
-      console.error("PDF generation error:", error);
-
-      // If html2canvas fails, try text-based PDF
-      if (error instanceof Error && error.message.includes("lab")) {
-        console.log("Detected lab() color issue, trying text-based PDF...");
-        try {
-          await generateTextPDF();
-          return;
-        } catch (textError) {
-          console.error("Text PDF also failed:", textError);
-        }
-      }
-
-      toast({
-        title: "Error",
-        description: `Failed to generate PDF report: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
-        variant: "destructive",
-      });
-    } finally {
-      setIsGenerating(false);
-      setDownloadType(null);
-    }
-  };
-
-  const generateTextPDF = async () => {
-    try {
-      console.log("Generating text-based PDF...");
-
-      const jsPDFModule = await import("jspdf");
-      const pdf = new jsPDFModule.jsPDF("p", "mm", "a4");
-
-      // Add title
-      pdf.setFontSize(20);
-      pdf.text("Chit Fund Report", 20, 30);
-
-      pdf.setFontSize(12);
-      pdf.text(`${currentChit?.name || "N/A"}`, 20, 45);
-      pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 55);
-
-      // Add summary
-      let yPos = 75;
-      pdf.setFontSize(14);
-      pdf.text("Summary", 20, yPos);
-      yPos += 10;
-
-      pdf.setFontSize(10);
-      const summaryItems = [
-        `Total Amount: ₹${
-          currentChit?.total_amount?.toLocaleString() || "N/A"
-        }`,
-        `Monthly Payment: ₹${
-          currentChit?.monthly_payment?.toLocaleString() || "N/A"
-        }`,
-        `Duration: ${currentChit?.duration_months || "N/A"} months`,
-        `Current Month: ${currentChit?.current_month || "N/A"}`,
-        `Total Draws: ${draws.length}`,
-        `Completed: ${draws.filter((d) => d.status === "completed").length}`,
-        `Pending: ${draws.filter((d) => d.status === "pending").length}`,
-      ];
-
-      summaryItems.forEach((item) => {
-        pdf.text(item, 20, yPos);
-        yPos += 8;
-      });
-
-      // Add draws table
-      yPos += 10;
-      pdf.setFontSize(14);
-      pdf.text("Monthly Draws", 20, yPos);
-      yPos += 15;
-
-      pdf.setFontSize(9);
-      // Table headers
-      pdf.text("Month", 20, yPos);
-      pdf.text("Date", 60, yPos);
-      pdf.text("Status", 100, yPos);
-      pdf.text("Winner", 130, yPos);
-      pdf.text("Payout", 170, yPos);
-      yPos += 8;
-
-      // Table data
-      draws.forEach((draw) => {
-        if (yPos > 270) {
-          // New page if needed
-          pdf.addPage();
-          yPos = 30;
-        }
-
-        pdf.text(
-          getMonthName(draw.month_number, currentChit?.start_date),
-          20,
-          yPos
-        );
-        pdf.text(new Date(draw.draw_date).toLocaleDateString(), 60, yPos);
-        pdf.text(draw.status, 100, yPos);
-        pdf.text(draw.winner_name || "Not Declared", 130, yPos);
-        pdf.text(`₹${draw.payout_amount.toLocaleString()}`, 170, yPos);
-        yPos += 8;
-      });
-
-      // Generate filename with timestamp
-      const timestamp = new Date().toISOString().split("T")[0];
-      const filename = `Chit_Fund_Report_Text_${timestamp}.pdf`;
-
-      // Download PDF
-      pdf.save(filename);
-
-      console.log("Text PDF download initiated");
-
-      toast({
-        title: "PDF Report Generated",
-        description: `Text-based PDF downloaded as ${filename}`,
-      });
-    } catch (error) {
-      console.error("Text PDF generation error:", error);
-      throw error;
-    }
-  };
+  // Capture the report as an image and trigger a PNG download
+  const generateImageDownload = async () => {};
 
   if (chitLoading || drawsLoading) {
     return (
@@ -447,7 +232,7 @@ export function ReportsManager() {
             <Button
               onClick={() => {
                 console.log("PDF button clicked");
-                generateImageReport();
+                generatePDFReport();
               }}
               disabled={isGenerating || !draws || draws.length === 0}
               variant="outline"
@@ -463,8 +248,8 @@ export function ReportsManager() {
 
             <Button
               onClick={() => {
-                console.log("Text PDF button clicked");
-                generateTextPDF();
+                console.log("Image download clicked");
+                generateImageDownload();
               }}
               disabled={isGenerating || !draws || draws.length === 0}
               variant="secondary"
@@ -475,7 +260,7 @@ export function ReportsManager() {
               ) : (
                 <FileImage className="h-4 w-4" />
               )}
-              Download Text PDF
+              Download Image Format
             </Button>
 
             {(!draws || draws.length === 0) && (
