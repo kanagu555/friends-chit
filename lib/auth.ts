@@ -1,5 +1,3 @@
-import { supabase } from './supabase'
-
 export type UserRole = 'admin' | 'member'
 
 export interface AuthUser {
@@ -11,6 +9,7 @@ export interface AuthUser {
 // Login function
 export async function signIn(email: string, password: string) {
   try {
+    const { supabase } = await import('./supabase')
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -40,6 +39,7 @@ export async function signIn(email: string, password: string) {
 // Logout function
 export async function signOut() {
   try {
+    const { supabase } = await import('./supabase')
     const { error } = await supabase.auth.signOut()
     if (error) throw error
     return { success: true }
@@ -54,6 +54,12 @@ export async function signOut() {
 // Get current user
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      return null
+    }
+
+    const { supabase } = await import('./supabase')
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) return null

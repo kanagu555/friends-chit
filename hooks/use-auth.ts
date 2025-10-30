@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
 import { AuthUser, getCurrentUser, signIn, signOut } from '@/lib/auth'
 
 export function useAuth() {
@@ -7,33 +6,62 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      setLoading(false)
+      return
+    }
+
     // Get initial session
     const getInitialSession = async () => {
-      const currentUser = await getCurrentUser()
-      setUser(currentUser)
-      setLoading(false)
+      try {
+        const currentUser = await getCurrentUser()
+        setUser(currentUser)
+      } catch (error) {
+        console.error('Error getting current user:', error)
+        setUser(null)
+      } finally {
+        setLoading(false)
+      }
     }
 
     getInitialSession()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (session?.user) {
-          const role = session.user.email === 'admin@chitfund.com' ? 'admin' : 'member'
-          setUser({
-            id: session.user.id,
-            email: session.user.email!,
-            role,
-          })
-        } else {
-          setUser(null)
-        }
+    let subscription: any = null
+    
+    const setupAuthListener = async () => {
+      try {
+        const { supabase } = await import('@/lib/supabase')
+        const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
+          async (event, session) => {
+            if (session?.user) {
+              const role = session.user.email === 'admin@chitfund.com' ? 'admin' : 'member'
+              setUser({
+                id: session.user.id,
+                email: session.user.email!,
+                role,
+              })
+            } else {
+              setUser(null)
+            }
+            setLoading(false)
+          }
+        )
+        subscription = authSubscription
+      } catch (error) {
+        console.error('Error setting up auth listener:', error)
         setLoading(false)
       }
-    )
+    }
 
-    return () => subscription.unsubscribe()
+    setupAuthListener()
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe()
+      }
+    }
   }, [])
 
   const login = async (email: string, password: string) => {

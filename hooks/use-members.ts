@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase, Member, MemberInsert, MemberUpdate } from '@/lib/supabase'
+import { Member, MemberInsert, MemberUpdate } from '@/lib/supabase'
 
 export function useMembers() {
   const [members, setMembers] = useState<Member[]>([])
@@ -9,7 +9,14 @@ export function useMembers() {
   // Fetch all members
   const fetchMembers = async () => {
     try {
+      // Only run on client side
+      if (typeof window === 'undefined') {
+        setLoading(false)
+        return
+      }
+
       setLoading(true)
+      const { supabase } = await import('@/lib/supabase')
       const { data, error } = await supabase
         .from('members')
         .select('*')
@@ -27,6 +34,7 @@ export function useMembers() {
   // Add new member
   const addMember = async (memberData: MemberInsert) => {
     try {
+      const { supabase } = await import('@/lib/supabase')
       const { data, error } = await supabase
         .from('members')
         .insert([{ ...memberData, status: memberData.status || 'active' }])
@@ -47,6 +55,7 @@ export function useMembers() {
   // Update member
   const updateMember = async (id: string, updates: MemberUpdate) => {
     try {
+      const { supabase } = await import('@/lib/supabase')
       const { data, error } = await supabase
         .from('members')
         .update({ ...updates, updated_at: new Date().toISOString() })
@@ -70,6 +79,7 @@ export function useMembers() {
   // Delete member
   const deleteMember = async (id: string) => {
     try {
+      const { supabase } = await import('@/lib/supabase')
       const { error } = await supabase
         .from('members')
         .delete()
