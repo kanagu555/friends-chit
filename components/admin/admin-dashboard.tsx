@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MembersManager } from "./members-manager";
 import { ChitFundManager } from "./chit-fund-manager";
+import { ReportsManager } from "./reports-manager";
 import {
   Users,
   TrendingUp,
@@ -326,25 +327,7 @@ export function AdminDashboard() {
         </TabsContent>
 
         <TabsContent value="reports" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Reports & Analytics</CardTitle>
-              <CardDescription>
-                Generate reports and view analytics
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">Reports</h3>
-                <p className="text-gray-600 mb-4">Generate detailed reports</p>
-                <Button>
-                  <FileText className="h-4 w-4 mr-2" />
-                  Generate Report
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <ReportsManager />
         </TabsContent>
 
         <TabsContent value="notifications" className="space-y-6">
