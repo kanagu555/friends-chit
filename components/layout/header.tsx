@@ -32,7 +32,7 @@ export function Header() {
     <header className="border-b bg-white shadow-sm">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <h1 className="text-xl font-bold text-gray-900">Chit Fund Manager</h1>
+          <h1 className="text-xl font-bold text-gray-900">Friend's Chit Fund Manager</h1>
           <Badge variant={user.role === 'admin' ? 'default' : 'secondary'} className="flex items-center gap-1">
             {user.role === 'admin' ? <Shield className="h-3 w-3" /> : <User className="h-3 w-3" />}
             {user.role.toUpperCase()}

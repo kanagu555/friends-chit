@@ -10,6 +10,14 @@ export const metadata: Metadata = {
   title: "Friend's Chit Fund Management",
   description: "Kodekit",
   generator: "kodekit.in",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
