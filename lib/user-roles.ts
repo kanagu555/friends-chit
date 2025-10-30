@@ -16,6 +16,8 @@ export const USER_ROLES = {
     'member@chitfund.com',
     'user@chitfund.com',
     'participant@chitfund.com',
+    'kumarasamywhb@gmail.com',    // Kumarasamy
+    'kanagarajwhb@gmail.com',     // Kanagaraj
     // Add more member emails here
   ]
 }
