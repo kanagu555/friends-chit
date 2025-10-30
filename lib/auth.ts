@@ -35,9 +35,37 @@ export async function signIn(email: string, password: string) {
       } as AuthUser,
     }
   } catch (error) {
+    console.error('🚨 Login Error:', error)
+    
+    // Handle specific Supabase auth errors
+    let errorMessage = 'Login failed'
+    
+    if (error && typeof error === 'object' && 'message' in error) {
+      const authError = error as any
+      
+      switch (authError.message) {
+        case 'Invalid login credentials':
+          errorMessage = 'Invalid email or password. Please check your credentials and try again.'
+          break
+        case 'Email not confirmed':
+          errorMessage = 'Please check your email and click the confirmation link before signing in.'
+          break
+        case 'Too many requests':
+          errorMessage = 'Too many login attempts. Please wait a moment and try again.'
+          break
+        case 'User not found':
+          errorMessage = 'No account found with this email address.'
+          break
+        default:
+          errorMessage = authError.message || 'Login failed'
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message
+    }
+    
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Login failed',
+      error: errorMessage,
     }
   }
 }

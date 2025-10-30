@@ -309,7 +309,7 @@ export function ChitFundManager() {
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
               <div className="text-2xl font-bold text-green-600">
-               ₹{monthlyParticipants.length}
+                {monthlyParticipants.length}
               </div>
               <div className="text-sm text-green-600">This Month</div>
             </div>
@@ -509,6 +509,7 @@ export function ChitFundManager() {
                     <thead>
                       <tr className="border-b">
                         <th className="text-left py-2 px-2">Name</th>
+                        <th className="text-left py-2 px-2">Amount</th>
                         <th className="text-left py-2 px-2">Actions</th>
                       </tr>
                     </thead>
@@ -521,6 +522,7 @@ export function ChitFundManager() {
                           <td className="py-2 px-2 font-medium">
                             {participant.member_name || "Unknown"}
                           </td>
+                          <td className="py-2 px-2">₹{"10,000"}</td>
                           <td className="py-2 px-2">
                             <div className="flex gap-1">
                               <Button
@@ -533,22 +535,6 @@ export function ChitFundManager() {
                                 title="Mark as Winner"
                               >
                                 <Crown className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => {
-                                  // Edit functionality - could open edit dialog
-                                  toast({
-                                    title: "Edit Participant",
-                                    description:
-                                      "Edit functionality coming soon",
-                                  });
-                                }}
-                                className="text-blue-600 hover:text-blue-700"
-                                title="Edit Participant"
-                              >
-                                <Edit className="h-4 w-4" />
                               </Button>
                               <Button
                                 size="sm"

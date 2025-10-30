@@ -24,9 +24,48 @@ export function LoginForm() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    general: "",
+  });
+
+  const validateForm = () => {
+    const newErrors = {
+      email: "",
+      password: "",
+      general: "",
+    };
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return !newErrors.email && !newErrors.password;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Clear previous errors
+    setErrors({ email: "", password: "", general: "" });
+
+    // Validate form
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     const result = await login(formData.email, formData.password);
@@ -36,7 +75,15 @@ export function LoginForm() {
         title: "Login Successful",
         description: `Welcome back! Logged in as ${result.user?.role}`,
       });
+      // Clear form on success
+      setFormData({ email: "", password: "" });
     } else {
+      // Set general error for display
+      setErrors((prev) => ({
+        ...prev,
+        general: result.error || "Login failed",
+      }));
+
       toast({
         title: "Login Failed",
         description: result.error,
@@ -70,11 +117,21 @@ export function LoginForm() {
                 type="email"
                 placeholder="Enter your email"
                 value={formData.email}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, email: e.target.value }))
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, email: e.target.value }));
+                  // Clear error when user starts typing
+                  if (errors.email) {
+                    setErrors((prev) => ({ ...prev, email: "" }));
+                  }
+                }}
+                className={
+                  errors.email ? "border-red-500 focus:border-red-500" : ""
                 }
                 required
               />
+              {errors.email && (
+                <p className="text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -85,11 +142,18 @@ export function LoginForm() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={formData.password}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setFormData((prev) => ({
                       ...prev,
                       password: e.target.value,
-                    }))
+                    }));
+                    // Clear error when user starts typing
+                    if (errors.password) {
+                      setErrors((prev) => ({ ...prev, password: "" }));
+                    }
+                  }}
+                  className={
+                    errors.password ? "border-red-500 focus:border-red-500" : ""
                   }
                   required
                 />
@@ -107,7 +171,16 @@ export function LoginForm() {
                   )}
                 </Button>
               </div>
+              {errors.password && (
+                <p className="text-sm text-red-600">{errors.password}</p>
+              )}
             </div>
+
+            {errors.general && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{errors.general}</p>
+              </div>
+            )}
 
             <Button
               type="submit"
