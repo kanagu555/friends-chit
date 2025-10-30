@@ -41,6 +41,13 @@ export function LoginForm() {
     setIsSubmitting(false)
   }
 
+  const fillCustomAdminCredentials = () => {
+    setFormData({
+      email: "harikrishnanwhb@gmail.com",
+      password: "hari@7733",
+    })
+  }
+
   const fillAdminCredentials = () => {
     setFormData({
       email: "admin@chitfund.com",
@@ -115,27 +122,40 @@ export function LoginForm() {
             </Button>
           </form>
 
-          <div className="mt-6 space-y-2">
-            <p className="text-sm text-gray-600 text-center">Demo Credentials:</p>
-            <div className="flex gap-2">
+          <div className="mt-6 space-y-3">
+            <p className="text-sm text-gray-600 text-center">Quick Login:</p>
+            
+            <div className="space-y-2">
               <Button
                 type="button"
-                variant="outline"
+                variant="default"
                 size="sm"
-                className="flex-1"
-                onClick={fillAdminCredentials}
+                className="w-full"
+                onClick={fillCustomAdminCredentials}
               >
-                Admin Login
+                🔑 Admin Login (Hari)
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="flex-1"
-                onClick={fillMemberCredentials}
-              >
-                Member Login
-              </Button>
+              
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={fillAdminCredentials}
+                >
+                  Demo Admin
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={fillMemberCredentials}
+                >
+                  Demo Member
+                </Button>
+              </div>
             </div>
           </div>
         </CardContent>
