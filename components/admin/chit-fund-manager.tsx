@@ -293,7 +293,7 @@ export function ChitFundManager() {
           <CardDescription>
             Started: {new Date(currentChit.start_date).toLocaleDateString()} |
             Duration: {currentChit.duration_months} months | Monthly: ₹
-            {currentChit.monthly_payment.toLocaleString()}
+            {currentChit.monthly_payment.toLocaleString("en-IN")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -315,7 +315,7 @@ export function ChitFundManager() {
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-lg">
               <div className="text-2xl font-bold text-purple-600">
-                ₹{(monthlyParticipants.length * 10000).toLocaleString()}
+                ₹{(monthlyParticipants.length * 10000).toLocaleString("en-IN")}
               </div>
               <div className="text-sm text-purple-600">Expected Collection</div>
             </div>
@@ -383,7 +383,7 @@ export function ChitFundManager() {
                       </div>
                       <div className="text-right">
                         <div className="font-semibold">
-                          ₹{draw.payout_amount.toLocaleString()}
+                          ₹{draw.payout_amount.toLocaleString("en-IN")}
                         </div>
                         <Badge
                           variant={
@@ -665,7 +665,7 @@ export function ChitFundManager() {
                           </div>
                           <div className="text-right ml-4">
                             <div className="text-lg font-bold">
-                              ₹{draw.payout_amount.toLocaleString()}
+                              ₹{draw.payout_amount.toLocaleString("en-IN")}
                             </div>
                             <div
                               className={`text-sm ${

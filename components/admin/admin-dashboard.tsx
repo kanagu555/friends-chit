@@ -114,7 +114,7 @@ export function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ₹{stats.totalPayments.toLocaleString()}
+              ₹{stats.totalPayments.toLocaleString("en-IN")}
             </div>
             <p className="text-xs text-gray-500">
               From {stats.membersWithPending} members
