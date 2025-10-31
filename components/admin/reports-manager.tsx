@@ -647,17 +647,24 @@ export function ReportsManager() {
                       </td>
                       <td className="border border-gray-300 p-3">
                         <Badge
-                          variant={
+                          variant="default"
+                          className={
                             draw.status === "completed"
-                              ? "default"
-                              : "secondary"
+                              ? "bg-green-500 hover:bg-green-600"
+                              : "bg-red-500 hover:bg-red-600"
                           }
                         >
                           {draw.status}
                         </Badge>
                       </td>
                       <td className="border border-gray-300 p-3">
-                        {draw.winner_name || "Not Declared"}
+                        {draw.winner_name ? (
+                          <div className="font-bold">
+                            {draw.winner_name || "Not Declared"}
+                          </div>
+                        ) : (
+                          "Not Declared"
+                        )}
                       </td>
                       <td className="border border-gray-300 p-3">
                         {draw.participants?.join(", ") || "None"}
