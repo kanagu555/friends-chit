@@ -162,8 +162,9 @@ export function ReportsManager() {
       console.error("Excel generation error:", error);
       toast({
         title: "Error",
-        description: `Failed to generate Excel report: ${error instanceof Error ? error.message : "Unknown error"
-          }`,
+        description: `Failed to generate Excel report: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
         variant: "destructive",
       });
     } finally {
@@ -221,8 +222,9 @@ export function ReportsManager() {
         },
         {
           label: "Monthly Payment",
-          value: `INR ${currentChit?.monthly_payment?.toLocaleString() || "N/A"
-            }`,
+          value: `INR ${
+            currentChit?.monthly_payment?.toLocaleString() || "N/A"
+          }`,
         },
         {
           label: "Duration",
@@ -274,8 +276,8 @@ export function ReportsManager() {
         "Participants",
         "Payout",
       ];
-      // Column x-positions: keep comfortable spacing and wider right margin for payout
-      const colX = [14, 52, 82, 112, 166, 196];
+      // Column x-positions: tighten Winner→Participants gap as well
+      const colX = [14, 35, 65, 90, 125, 193];
       pdf.setDrawColor(...brand.line);
       pdf.line(14, y, 196, y);
       y += 6;
@@ -308,12 +310,19 @@ export function ReportsManager() {
 
       draws.forEach((draw, idx) => {
         // Prepare participants text wrapping
-        const participantsNames = (draw.participants && draw.participants.length > 0)
-          ? draw.participants.join(", ")
-          : "None";
+        const participantsNames =
+          draw.participants && draw.participants.length > 0
+            ? draw.participants.join(", ")
+            : "None";
         const availableWidth = colX[5] - colX[4] - 8; // space before payout
-        const participantLines = pdf.splitTextToSize(participantsNames, availableWidth);
-        const dynamicRowHeight = Math.max(rowHeight, participantLines.length * 5);
+        const participantLines = pdf.splitTextToSize(
+          participantsNames,
+          availableWidth
+        );
+        const dynamicRowHeight = Math.max(
+          rowHeight,
+          participantLines.length * 5
+        );
 
         if (y + dynamicRowHeight > 270) {
           addFooter();
@@ -343,15 +352,19 @@ export function ReportsManager() {
 
         pdf.setTextColor(0, 0, 0);
         pdf.setFontSize(9);
-        pdf.text(getMonthName(draw.month_number, currentChit?.start_date), colX[0], y);
+        pdf.text(
+          getMonthName(draw.month_number, currentChit?.start_date),
+          colX[0],
+          y
+        );
         pdf.text(new Date(draw.draw_date).toLocaleDateString(), colX[1], y);
         const status = draw.status.toUpperCase();
         const statusColor =
           draw.status === "completed"
             ? brand.green
             : draw.status === "pending"
-              ? ([245, 158, 11] as any)
-              : brand.subtle;
+            ? ([245, 158, 11] as any)
+            : brand.subtle;
         pdf.setTextColor(...(statusColor as [number, number, number]));
         pdf.text(status, colX[2], y);
         pdf.setTextColor(0, 0, 0);
@@ -385,8 +398,9 @@ export function ReportsManager() {
       console.error("PDF generation error:", error);
       toast({
         title: "Error",
-        description: `Failed to generate PDF report: ${error instanceof Error ? error.message : "Unknown error"
-          }`,
+        description: `Failed to generate PDF report: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
         variant: "destructive",
       });
     } finally {
@@ -585,10 +599,11 @@ export function ReportsManager() {
                         {draw.payout_amount.toLocaleString()}
                       </td>
                       <td
-                        className={`border border-gray-300 p-3 text-right ${draw.benefit_amount < 0
-                          ? "text-red-600"
-                          : "text-green-600"
-                          }`}
+                        className={`border border-gray-300 p-3 text-right ${
+                          draw.benefit_amount < 0
+                            ? "text-red-600"
+                            : "text-green-600"
+                        }`}
                       >
                         {draw.benefit_amount > 0 ? "+" : ""}
                         {draw.benefit_amount}
