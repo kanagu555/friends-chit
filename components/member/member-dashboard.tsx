@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { MyContributions } from "./my-contributions"
 import { DrawHistory } from "./draw-history"
 import { ChitCalculator } from "./chit-calculator"
+import { SchemeDetail } from "./scheme-detail"
 
 export function MemberDashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
   const [activeTab, setActiveTab] = useState("overview")
@@ -71,8 +72,9 @@ export function MemberDashboard({ user, onLogout }: { user: any; onLogout: () =>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="scheme">Scheme Detail</TabsTrigger>
             <TabsTrigger value="contributions">Contributions</TabsTrigger>
             <TabsTrigger value="draws">Draws</TabsTrigger>
             <TabsTrigger value="calculator">Calculator</TabsTrigger>
@@ -131,6 +133,10 @@ export function MemberDashboard({ user, onLogout }: { user: any; onLogout: () =>
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="scheme">
+            {/* <SchemeDetail /> */}
           </TabsContent>
 
           <TabsContent value="contributions">
