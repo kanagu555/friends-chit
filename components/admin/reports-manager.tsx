@@ -26,7 +26,7 @@ import { getMonthName } from "@/lib/month-utils";
 
 export function ReportsManager() {
   const [isGenerating, setIsGenerating] = useState(false);
-  const [downloadType, setDownloadType] = useState<"excel" | "image" | null>(
+  const [downloadType, setDownloadType] = useState<"excel" | "pdf" | null>(
     null
   );
   const reportRef = useRef<HTMLDivElement>(null);
@@ -176,7 +176,7 @@ export function ReportsManager() {
   const generatePDFReport = async () => {
     try {
       setIsGenerating(true);
-      setDownloadType("image");
+      setDownloadType("pdf");
 
       console.log("Generating colorful PDF report...");
 
@@ -516,9 +516,6 @@ export function ReportsManager() {
     }
   };
 
-  // Capture the report as an image and trigger a PNG download
-  const generateImageDownload = async () => {};
-
   if (chitLoading || drawsLoading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -579,29 +576,12 @@ export function ReportsManager() {
               variant="outline"
               className="flex items-center gap-2"
             >
-              {isGenerating && downloadType === "image" ? (
+              {isGenerating && downloadType === "pdf" ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <FileImage className="h-4 w-4" />
               )}
               Download PDF Report
-            </Button>
-
-            <Button
-              onClick={() => {
-                console.log("Image download clicked");
-                generateImageDownload();
-              }}
-              disabled={isGenerating || !draws || draws.length === 0}
-              variant="secondary"
-              className="flex items-center gap-2"
-            >
-              {isGenerating ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <FileImage className="h-4 w-4" />
-              )}
-              Download Image Format
             </Button>
 
             {(!draws || draws.length === 0) && (
@@ -614,7 +594,7 @@ export function ReportsManager() {
       </Card>
 
       {/* Report Preview */}
-      <div ref={reportRef} className="bg-white">
+      <div ref={reportRef} className="bg-white" data-report-root>
         <Card>
           <CardHeader className="text-center border-b">
             <CardTitle className="text-2xl">Chit Fund Report</CardTitle>
