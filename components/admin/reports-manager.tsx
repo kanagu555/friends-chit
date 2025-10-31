@@ -101,11 +101,11 @@ export function ReportsManager() {
         { Metric: "Chit Fund Name", Value: currentChit?.name || "N/A" },
         {
           Metric: "Total Amount",
-          Value: currentChit?.total_amount?.toLocaleString() || "N/A",
+          Value: currentChit?.total_amount?.toLocaleString("en-IN") || "N/A",
         },
         {
           Metric: "Monthly Payment",
-          Value: currentChit?.monthly_payment?.toLocaleString() || "N/A",
+          Value: currentChit?.monthly_payment?.toLocaleString("en-IN") || "N/A",
         },
         {
           Metric: "Duration (Months)",
@@ -132,9 +132,12 @@ export function ReportsManager() {
           Metric: "Total Payout",
           Value: draws
             .reduce((sum, d) => sum + d.payout_amount, 0)
-            .toLocaleString(),
+            .toLocaleString("en-IN"),
         },
-        { Metric: "Report Generated", Value: new Date().toLocaleString() },
+        {
+          Metric: "Report Generated",
+          Value: new Date().toLocaleString("en-IN"),
+        },
       ];
 
       const summaryWs = XLSX.utils.json_to_sheet(summaryData);
@@ -219,12 +222,14 @@ export function ReportsManager() {
       const tiles = [
         {
           label: "Total Amount",
-          value: `INR ${currentChit?.total_amount?.toLocaleString() || "N/A"}`,
+          value: `INR ${
+            currentChit?.total_amount?.toLocaleString("en-IN") || "N/A"
+          }`,
         },
         {
           label: "Monthly Payment",
           value: `INR ${
-            currentChit?.monthly_payment?.toLocaleString() || "N/A"
+            currentChit?.monthly_payment?.toLocaleString("en-IN") || "N/A"
           }`,
         },
         {
@@ -415,7 +420,7 @@ export function ReportsManager() {
           pdf.text(line, colX[4], ly);
         });
         pdf.setTextColor(...brand.green);
-        pdf.text(draw.payout_amount.toLocaleString(), colX[5], y, {
+        pdf.text(draw.payout_amount.toLocaleString("en-IN"), colX[5], y, {
           align: "right",
         });
         pdf.setTextColor(0, 0, 0);
@@ -543,7 +548,7 @@ export function ReportsManager() {
               <div className="text-center p-4 bg-blue-50 rounded-lg">
                 <IndianRupee className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-blue-600">
-                  ₹{currentChit.total_amount.toLocaleString()}
+                  ₹{currentChit.total_amount.toLocaleString("en-IN")}
                 </div>
                 <div className="text-sm text-blue-600">Total Amount</div>
               </div>
@@ -637,7 +642,7 @@ export function ReportsManager() {
                         {draw.participants?.join(", ") || "None"}
                       </td>
                       <td className="border border-gray-300 p-3 text-right">
-                        {draw.payout_amount.toLocaleString()}
+                        {draw.payout_amount.toLocaleString("en-IN")}
                       </td>
                       <td
                         className={`border border-gray-300 p-3 text-right ${
@@ -669,7 +674,7 @@ export function ReportsManager() {
                   <strong>Total Payout:</strong> ₹
                   {draws
                     .reduce((sum, d) => sum + d.payout_amount, 0)
-                    .toLocaleString()}
+                    .toLocaleString("en-IN")}
                 </div>
               </div>
             </div>
