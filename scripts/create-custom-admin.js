@@ -22,7 +22,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Custom admin credentials
 const ADMIN_EMAIL = "harikrishnanwhb@gmail.com";
-const ADMIN_PASSWORD = "hari@7733";
+const ADMIN_PASSWORD = "*****";
 
 async function createCustomAdmin() {
   console.log("🔧 Creating custom admin account...");

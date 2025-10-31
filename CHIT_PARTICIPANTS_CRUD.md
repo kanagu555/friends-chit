@@ -76,7 +76,7 @@
 ```
 
 ### **2. Access the System**
-1. Login as admin: `harikrishnanwhb@gmail.com` / `hari@7733`
+1. Login as admin: `harikrishnanwhb@gmail.com` / `*****`
 2. Go to **"Chit Fund"** tab
 3. Navigate to **"Participants"** sub-tab
 4. Start adding participants from your members list

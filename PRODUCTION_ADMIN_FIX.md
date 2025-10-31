@@ -42,7 +42,7 @@ npm run dev
 
 ### Step 3: Verify Admin Access
 
-1. Login with `harikrishnanwhb@gmail.com` / `hari@7733`
+1. Login with `harikrishnanwhb@gmail.com` / `*****`
 2. Check the **debug info** at the top of dashboard
 3. Verify you see **"Admin Panel"** instead of member dashboard
 4. Test **member management** features

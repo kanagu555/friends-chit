@@ -2,7 +2,7 @@
 
 ## ✅ **Yes, Your Admin Login Will Work in Production!**
 
-Your custom admin account (`harikrishnanwhb@gmail.com` / `hari@7733`) is configured to work in both development and production environments.
+Your custom admin account (`harikrishnanwhb@gmail.com` / `*****`) is configured to work in both development and production environments.
 
 ## 🔧 **How It Works in Production**
 
@@ -46,7 +46,7 @@ npm run create-admin
 1. Go to your production Supabase project
 2. Authentication > Users > Add User
 3. Email: `harikrishnanwhb@gmail.com`
-4. Password: `hari@7733`
+4. Password: `*****`
 5. Confirm email
 
 ### 4. Configure Production Database

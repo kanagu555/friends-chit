@@ -35,7 +35,7 @@ Run the chit fund schema in your Supabase SQL Editor:
 ```
 
 ### 2. **Access Admin Dashboard**
-1. Login as admin: `harikrishnanwhb@gmail.com` / `hari@7733`
+1. Login as admin: `harikrishnanwhb@gmail.com` / `*****`
 2. Navigate to **"Chit Fund"** tab
 3. You'll see the complete chit fund management interface
 

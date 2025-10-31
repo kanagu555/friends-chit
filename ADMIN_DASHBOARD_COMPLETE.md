@@ -54,7 +54,7 @@ You were only seeing the "Add New Member" section because the previous implement
 ## 📱 **User Experience**
 
 ### **Admin Login Flow:**
-1. Login with `harikrishnanwhb@gmail.com` / `hari@7733`
+1. Login with `harikrishnanwhb@gmail.com` / `*****`
 2. See comprehensive dashboard with statistics
 3. Navigate between different sections using tabs
 4. Access member management in the "Members" tab

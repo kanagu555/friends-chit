@@ -2,7 +2,7 @@
 
 ## 🎯 Your Admin Account
 - **Email**: `harikrishnanwhb@gmail.com`
-- **Password**: `hari@7733`
+- **Password**: `*****`
 - **Role**: Admin (Full Access)
 
 ## 🚀 Quick Setup

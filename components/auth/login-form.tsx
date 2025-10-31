@@ -94,18 +94,13 @@ export function LoginForm() {
     setIsSubmitting(false);
   };
 
-  const fillCustomAdminCredentials = () => {
-    setFormData({
-      email: "harikrishnanwhb@gmail.com",
-      password: "hari@7733",
-    });
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Chit Fund Login</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            Friend's Chit Fund Login
+          </CardTitle>
           <CardDescription>Sign in to access your account</CardDescription>
         </CardHeader>
         <CardContent>
@@ -193,22 +188,6 @@ export function LoginForm() {
               Sign In
             </Button>
           </form>
-
-          <div className="mt-6 space-y-3">
-            <p className="text-sm text-gray-600 text-center">Quick Login:</p>
-
-            <div className="space-y-2">
-              <Button
-                type="button"
-                variant="default"
-                size="sm"
-                className="w-full"
-                onClick={fillCustomAdminCredentials}
-              >
-                🔑 Admin Login (Hari)
-              </Button>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>

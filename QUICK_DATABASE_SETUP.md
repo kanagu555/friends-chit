@@ -7,7 +7,7 @@ This happens because the chit fund tables haven't been created in your Supabase 
 ## ✅ **Quick Fix - 2 Options**
 
 ### **Option 1: One-Click Setup (Easiest)**
-1. **Login as admin**: `harikrishnanwhb@gmail.com` / `hari@7733`
+1. **Login as admin**: `harikrishnanwhb@gmail.com` / `*****`
 2. **Go to Chit Fund tab** - you'll see "No Active Chit Fund"
 3. **Click "Create 1 Lakh Chit Fund"** button
 4. **Done!** The system will automatically create everything

@@ -44,7 +44,7 @@ const supabase = createClient(
 
 // Production admin credentials
 const ADMIN_EMAIL = "harikrishnanwhb@gmail.com";
-const ADMIN_PASSWORD = "hari@7733";
+const ADMIN_PASSWORD = "*****";
 
 async function createProductionAdmin() {
   console.log("🚀 Creating production admin account...");
