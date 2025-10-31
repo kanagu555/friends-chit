@@ -187,6 +187,7 @@ export function ReportsManager() {
         line: [229, 231, 235] as [number, number, number],
         green: [34, 197, 94] as [number, number, number],
         red: [239, 68, 68] as [number, number, number],
+        orange: [245, 158, 11] as [number, number, number],
       };
 
       let y = 18;
@@ -197,7 +198,7 @@ export function ReportsManager() {
       pdf.setTextColor(255, 255, 255);
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(16);
-      pdf.text("Chit Fund Report", 14, 18);
+      pdf.text("Friend's Chit Fund Report", 14, 18);
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(10);
       pdf.text(`${currentChit?.name || "N/A"}`, 14, 24);
@@ -238,19 +239,58 @@ export function ReportsManager() {
       const tileHeight = 18;
       const tileGap = 10;
       const tilesPerRow = 2;
+      const tileBg = (idx: number): [number, number, number] => {
+        // soft tinted backgrounds corresponding to content
+        switch (idx) {
+          case 0: // Total Amount
+            return [239, 246, 255]; // light blue
+          case 1: // Monthly Payment
+            return [240, 253, 244]; // light green
+          case 2: // Duration
+            return [243, 244, 246]; // neutral light gray
+          case 3: // Current Month (if present)
+            return [255, 247, 237]; // light orange
+          case 4: // Total Draws
+            return [243, 244, 246];
+          case 5: // Completed Draws
+            return [240, 253, 244];
+          case 6: // Pending Draws
+            return [255, 247, 237];
+          default:
+            return [250, 250, 250];
+        }
+      };
+
+      const tileValueColor = (idx: number): [number, number, number] => {
+        switch (idx) {
+          case 0:
+            return brand.accent;
+          case 1:
+            return brand.green;
+          case 5:
+            return brand.green;
+          case 6:
+            return brand.orange;
+          default:
+            return brand.accent;
+        }
+      };
+
       tiles.forEach((t, i) => {
         const col = i % tilesPerRow;
         const row = Math.floor(i / tilesPerRow);
         const x = 14 + col * (tileWidth + tileGap);
         const ty = y + row * (tileHeight + 6);
+        const bg = tileBg(i);
         pdf.setDrawColor(...brand.line);
-        pdf.setFillColor(250, 250, 250);
+        pdf.setFillColor(bg[0], bg[1], bg[2]);
         pdf.rect(x, ty, tileWidth, tileHeight, "F");
         pdf.rect(x, ty, tileWidth, tileHeight, "S");
         pdf.setTextColor(...brand.subtle);
         pdf.setFontSize(8);
         pdf.text(t.label, x + 4, ty + 7);
-        pdf.setTextColor(...brand.accent);
+        const vc = tileValueColor(i);
+        pdf.setTextColor(vc[0], vc[1], vc[2]);
         pdf.setFont("helvetica", "bold");
         pdf.setFontSize(11);
         pdf.text(t.value, x + 4, ty + 14);
@@ -319,10 +359,9 @@ export function ReportsManager() {
           participantsNames,
           availableWidth
         );
-        const dynamicRowHeight = Math.max(
-          rowHeight,
-          participantLines.length * 5
-        );
+        const bottomPadding = participantLines.length > 1 ? 3 : 0;
+        const dynamicRowHeight =
+          Math.max(rowHeight, participantLines.length * 5) + bottomPadding;
 
         if (y + dynamicRowHeight > 270) {
           addFooter();
@@ -490,7 +529,9 @@ export function ReportsManager() {
       <div ref={reportRef} className="bg-white" data-report-root>
         <Card>
           <CardHeader className="text-center border-b">
-            <CardTitle className="text-2xl">Chit Fund Report</CardTitle>
+            <CardTitle className="text-2xl">
+              Friend's Chit Fund Report
+            </CardTitle>
             <CardDescription className="text-lg">
               {currentChit.name} - Generated on{" "}
               {new Date().toLocaleDateString()}
