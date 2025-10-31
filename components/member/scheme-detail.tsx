@@ -59,20 +59,20 @@ export function SchemeDetail() {
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                <tr className="border-b-2 border-gray-200 bg-indigo-500">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700 text-white">
                     Month
                   </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700 text-white">
                     Draw Date
                   </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700 text-white">
                     Payout Amount
                   </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700 text-white">
                     Benefit/Loss
                   </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-700">
+                  <th className="text-center py-3 px-4 font-semibold text-gray-700 text-white">
                     Status
                   </th>
                 </tr>

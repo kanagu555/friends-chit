@@ -142,7 +142,7 @@ function MemberDashboard() {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2 bg-gray-200 rounded-lg p-1">
           <TabsTrigger value="scheme">Scheme Detail</TabsTrigger>
           <TabsTrigger value="draws">Draws</TabsTrigger>
         </TabsList>
