@@ -507,7 +507,7 @@ export function ReportsManager() {
                 generateExcelReport();
               }}
               disabled={isGenerating || !draws || draws.length === 0}
-              className="flex items-center gap-2 bg-green-500 hover:bg-green-600"
+              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 cursor-pointer text-white"
             >
               {isGenerating && downloadType === "excel" ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -523,7 +523,7 @@ export function ReportsManager() {
                 generatePDFReport();
               }}
               disabled={isGenerating || !draws || draws.length === 0}
-              className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white"
+              className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white cursor-pointer"
             >
               {isGenerating && downloadType === "pdf" ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

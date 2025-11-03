@@ -130,7 +130,7 @@ export function AddParticipantDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="flex items-center cursor-pointer">
           <Plus className="h-4 w-4 mr-2" />
           {buttonText}
         </Button>
@@ -221,7 +221,11 @@ export function AddParticipantDialog({
           </div>
 
           <div className="flex justify-end gap-2 pt-4 border-t">
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button
+              variant="outline"
+              className="cursor-pointer"
+              onClick={() => setOpen(false)}
+            >
               Cancel
             </Button>
             <Button
@@ -231,6 +235,7 @@ export function AddParticipantDialog({
                 isSubmitting ||
                 availableMembers.length === 0
               }
+              className="cursor-pointer"
             >
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -141,29 +141,44 @@ export function AdminDashboard() {
       {/* Navigation Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
+          <TabsTrigger
+            value="overview"
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <Activity className="h-4 w-4" />
             Overview
           </TabsTrigger>
-          <TabsTrigger value="chitfund" className="flex items-center gap-2">
+          <TabsTrigger
+            value="chitfund"
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <Target className="h-4 w-4" />
             Chit Fund
           </TabsTrigger>
-          <TabsTrigger value="members" className="flex items-center gap-2">
+          <TabsTrigger
+            value="members"
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <Users className="h-4 w-4" />
             Members
           </TabsTrigger>
-          <TabsTrigger value="payments" className="flex items-center gap-2">
+          <TabsTrigger
+            value="payments"
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <IndianRupee className="h-4 w-4" />
             Payments
           </TabsTrigger>
-          <TabsTrigger value="reports" className="flex items-center gap-2">
+          <TabsTrigger
+            value="reports"
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <FileText className="h-4 w-4" />
             Reports
           </TabsTrigger>
           <TabsTrigger
             value="notifications"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 cursor-pointer"
           >
             <Bell className="h-4 w-4" />
             Notifications

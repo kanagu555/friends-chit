@@ -340,9 +340,15 @@ export function ChitFundManager() {
       {/* Management Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="participants">Participants</TabsTrigger>
-          <TabsTrigger value="draws">Draws</TabsTrigger>
+          <TabsTrigger value="overview" className="cursor-pointer">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="participants" className="cursor-pointer">
+            Participants
+          </TabsTrigger>
+          <TabsTrigger value="draws" className="cursor-pointer">
+            Draws
+          </TabsTrigger>
           {/* <TabsTrigger value="payments">Payments</TabsTrigger> */}
         </TabsList>
 
@@ -425,8 +431,8 @@ export function ChitFundManager() {
                     onClick={() => setSelectedMonth(month)}
                     className={
                       month === (currentChit.current_month || 1)
-                        ? "ring-2 ring-blue-500"
-                        : ""
+                        ? "ring-2 ring-blue-500 cursor-pointer"
+                        : "cursor-pointer"
                     }
                   >
                     {getMonthName(month, currentChit.start_date)}
