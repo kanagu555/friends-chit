@@ -15,7 +15,11 @@ import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 
-export function LoginForm() {
+interface LoginFormProps {
+  onBack?: () => void
+}
+
+export function LoginForm({ onBack }: LoginFormProps) {
   const { login, loading } = useAuth();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -187,6 +191,17 @@ export function LoginForm() {
               )}
               Sign In
             </Button>
+
+            {onBack && (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={onBack}
+              >
+                Back to Home
+              </Button>
+            )}
           </form>
         </CardContent>
       </Card>

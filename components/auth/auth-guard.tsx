@@ -1,7 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { useAuth } from "@/hooks/use-auth"
 import { LoginForm } from "./login-form"
+import { LandingPage } from "@/components/landing/landing-page"
 import { Loader2 } from "lucide-react"
 
 interface AuthGuardProps {
@@ -11,6 +13,7 @@ interface AuthGuardProps {
 
 export function AuthGuard({ children, requiredRole }: AuthGuardProps) {
   const { user, loading, isAuthenticated } = useAuth()
+  const [showLogin, setShowLogin] = useState(false)
 
   if (loading) {
     return (
@@ -24,7 +27,10 @@ export function AuthGuard({ children, requiredRole }: AuthGuardProps) {
   }
 
   if (!isAuthenticated) {
-    return <LoginForm />
+    if (showLogin) {
+      return <LoginForm onBack={() => setShowLogin(false)} />
+    }
+    return <LandingPage onGetStarted={() => setShowLogin(true)} />
   }
 
   if (requiredRole && user?.role !== requiredRole) {
