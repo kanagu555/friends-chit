@@ -225,7 +225,11 @@ export function MembersManager() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button type="submit" className="flex-1" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                className="flex-1 cursor-pointer"
+                disabled={isSubmitting}
+              >
                 {isSubmitting && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
@@ -294,6 +298,7 @@ export function MembersManager() {
                           <Button
                             size="sm"
                             variant="ghost"
+                            className="cursor-pointer"
                             onClick={() => handleEdit(member)}
                             disabled={editingMember === member.id}
                           >
@@ -303,7 +308,7 @@ export function MembersManager() {
                             size="sm"
                             variant="ghost"
                             onClick={() => handleDelete(member.id)}
-                            className="text-red-600 hover:text-red-700"
+                            className="text-red-600 hover:text-red-700 cursor-pointer"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

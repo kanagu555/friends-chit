@@ -537,7 +537,7 @@ export function ChitFundManager() {
                                 onClick={() =>
                                   handleDeclareWinner(participant.id)
                                 }
-                                className="text-yellow-600 hover:text-yellow-700"
+                                className="text-yellow-600 hover:text-yellow-700 cursor-pointer"
                                 title="Mark as Winner"
                               >
                                 <Crown className="h-4 w-4" />
@@ -548,7 +548,7 @@ export function ChitFundManager() {
                                 onClick={() =>
                                   handleRemoveParticipant(participant.id)
                                 }
-                                className="text-red-600 hover:text-red-700"
+                                className="text-red-600 hover:text-red-700 cursor-pointer"
                                 title="Remove from this month's auction"
                               >
                                 <Trash2 className="h-4 w-4" />
