@@ -105,11 +105,10 @@ export function MemberReports() {
         "Draw Date": new Date(draw.draw_date).toLocaleDateString(),
         Status: draw.status,
         Winner: draw.winner_name || "Not Declared",
-        "You Won": draw.isWinner ? "Yes" : "No",
-        "You Participated": draw.participatedIn ? "Yes" : "No",
+        Participants: draw.participants?.join(", ") || "None",
+        "Participant Count": draw.participants?.length || 0,
         "Payout Amount": draw.payout_amount,
         "Benefit Amount": draw.benefit_amount,
-        Participants: draw.participants?.length || 0,
       }));
 
       const wb = XLSX.utils.book_new();
@@ -121,11 +120,10 @@ export function MemberReports() {
         { wch: 12 }, // Draw Date
         { wch: 12 }, // Status
         { wch: 20 }, // Winner
-        { wch: 10 }, // You Won
-        { wch: 15 }, // You Participated
+        { wch: 40 }, // Participants
+        { wch: 15 }, // Participant Count
         { wch: 18 }, // Payout Amount
         { wch: 18 }, // Benefit Amount
-        { wch: 15 }, // Participants
       ];
       ws["!cols"] = colWidths;
 
@@ -280,8 +278,7 @@ export function MemberReports() {
         { text: "Month", x: 20 },
         { text: "Date", x: 50 },
         { text: "Winner", x: 80 },
-        { text: "Won", x: 120 },
-        { text: "Participated", x: 140 },
+        { text: "Participants", x: 120 },
         { text: "Payout", x: 175 },
       ];
 
@@ -346,16 +343,13 @@ export function MemberReports() {
           yPos + 2
         );
 
-        if (draw.isWinner) {
-          pdf.setTextColor(...colors.success);
-          pdf.text("YES", 120, yPos + 2);
-        } else {
-          pdf.setTextColor(...colors.secondary);
-          pdf.text("No", 120, yPos + 2);
-        }
-
+        // Display participants count
         pdf.setTextColor(0, 0, 0);
-        pdf.text(draw.participatedIn ? "Yes" : "No", 140, yPos + 2);
+        const participantCount = draw.participants?.length || 0;
+        const participantText = `${participantCount} member${
+          participantCount !== 1 ? "s" : ""
+        }`;
+        pdf.text(participantText, 120, yPos + 2);
 
         pdf.setTextColor(...colors.success);
         pdf.text(draw.payout_amount.toLocaleString(), 175, yPos + 2);
@@ -513,11 +507,8 @@ export function MemberReports() {
                   <th className="border border-gray-300 p-3 text-left font-semibold">
                     Winner
                   </th>
-                  <th className="border border-gray-300 p-3 text-center font-semibold">
-                    I Won
-                  </th>
-                  <th className="border border-gray-300 p-3 text-center font-semibold">
-                    I Participated
+                  <th className="border border-gray-300 p-3 text-left font-semibold">
+                    Participants
                   </th>
                   <th className="border border-gray-300 p-3 text-right font-semibold">
                     Payout (₹)
@@ -534,22 +525,45 @@ export function MemberReports() {
                       {new Date(draw.draw_date).toLocaleDateString()}
                     </td>
                     <td className="border border-gray-300 p-3">
-                      {draw.winner_name || "Not Declared"}
-                    </td>
-                    <td className="border border-gray-300 p-3 text-center">
-                      {draw.isWinner && draw.status === "completed" ? (
-                        <Badge className="bg-green-100 text-green-800">
-                          🎉 Yes
-                        </Badge>
+                      {draw.winner_name ? (
+                        <div className="font-bold bg-green-200 inline-block px-2 py-1 rounded">
+                          {draw.winner_name || "Not Declared"}
+                        </div>
                       ) : (
-                        <Badge variant="secondary">No</Badge>
+                        "Not Declared"
                       )}
                     </td>
-                    <td className="border border-gray-300 p-3 text-center">
-                      {draw.participatedIn ? (
-                        <Badge variant="outline">Yes</Badge>
+                    <td className="border border-gray-300 p-3">
+                      {draw.participants && draw.participants.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {draw.participants.map((participant, index) => (
+                            <Badge
+                              key={index}
+                              variant={
+                                participant === memberName
+                                  ? "default"
+                                  : participant === draw.winner_name
+                                  ? "secondary"
+                                  : "outline"
+                              }
+                              className={`text-xs ${
+                                participant === memberName
+                                  ? "bg-blue-100 text-blue-800 border-blue-200"
+                                  : participant === draw.winner_name
+                                  ? "bg-yellow-100 text-yellow-800 border-yellow-200"
+                                  : "bg-gray-100 text-gray-700 border-gray-200"
+                              }`}
+                            >
+                              {participant === memberName && "👤 "}
+                              {participant === draw.winner_name && "🏆 "}
+                              {participant}
+                            </Badge>
+                          ))}
+                        </div>
                       ) : (
-                        <Badge variant="secondary">No</Badge>
+                        <span className="text-gray-500 text-sm">
+                          No participants
+                        </span>
                       )}
                     </td>
                     <td className="border border-gray-300 p-3 text-right">
