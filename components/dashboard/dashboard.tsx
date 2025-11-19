@@ -17,6 +17,7 @@ import { SchemeDetail } from "@/components/member/scheme-detail";
 import { MyContributions } from "@/components/member/my-contributions";
 import { DrawHistory } from "@/components/member/draw-history";
 import { ChitCalculator } from "@/components/member/chit-calculator";
+import { MemberReports } from "@/components/member/member-reports";
 import {
   IndianRupee,
   Calendar,
@@ -142,9 +143,10 @@ function MemberDashboard() {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid w-full grid-cols-2 bg-gray-200 rounded-lg p-1">
+        <TabsList className="grid w-full grid-cols-3 bg-gray-200 rounded-lg p-1">
           <TabsTrigger value="scheme">Scheme Detail</TabsTrigger>
           <TabsTrigger value="draws">Draws</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
         <TabsContent value="scheme">
@@ -153,6 +155,10 @@ function MemberDashboard() {
 
         <TabsContent value="draws">
           <DrawHistory />
+        </TabsContent>
+
+        <TabsContent value="reports">
+          <MemberReports />
         </TabsContent>
       </Tabs>
     </div>
