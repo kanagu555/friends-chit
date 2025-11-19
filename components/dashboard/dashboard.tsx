@@ -144,9 +144,15 @@ function MemberDashboard() {
         className="space-y-4"
       >
         <TabsList className="grid w-full grid-cols-3 bg-gray-200 rounded-lg p-1">
-          <TabsTrigger value="scheme">Scheme Detail</TabsTrigger>
-          <TabsTrigger value="draws">Draws</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsTrigger value="scheme" className="cursor-pointer">
+            Scheme Detail
+          </TabsTrigger>
+          <TabsTrigger value="draws" className="cursor-pointer">
+            Draws
+          </TabsTrigger>
+          <TabsTrigger value="reports" className="cursor-pointer">
+            Reports
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="scheme">
